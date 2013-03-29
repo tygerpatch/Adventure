@@ -26,12 +26,11 @@ public class TakeCommand extends AbstractCommand {
     }
 
     // ex. What item would you like to take? bread, garlic, club
-    System.out.print("What item would you like to take? " + currentRoom.items);
+    System.out.print(currentRoom.items + " What item would you like to take? ");
 
     // ex. <user types> club
-    Scanner scanner = new Scanner(System.in);
-    String strItem = scanner.next();
-    scanner.close();
+    Scanner scanner = adventure.getScanner();
+    String strItem = scanner.nextLine();
 
     Player player = adventure.getPlayer();
 
@@ -40,8 +39,8 @@ public class TakeCommand extends AbstractCommand {
       if (item.name().equalsIgnoreCase(strItem)) {
         if (player.knapsack.addItem(item)) {
           currentRoom.items.remove(item);
-          return;
         }
+        return;
       }
     }
 

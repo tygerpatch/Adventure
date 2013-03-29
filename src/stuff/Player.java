@@ -10,9 +10,16 @@ public class Player {
   public Knapsack knapsack = new Knapsack();
   private int health;
 
+  public Player() {
+    health = FULL_HEALTH;
+  }
+
   // ex. player.updateHealth(-10);
   public void updateHealth(int points) {
     health += points;
+    if(health > FULL_HEALTH) {
+      health = FULL_HEALTH;
+    }
     System.out.println("Health: " + health);
   }
 
@@ -30,6 +37,7 @@ public class Player {
     if(food == EatableDefensiveItem.Garlic) {
       // You can keep and reuse garlic
       System.out.println("You ate some Garlic.");
+      garlicBreath = true;
     }
     // bread (good for 10 points of health, only when you apply it)
     else if(food == EatableHealthItem.Bread) {
@@ -50,6 +58,18 @@ public class Player {
   public static final byte FULL_HEALTH = 100;
 
   public boolean hasWounds() {
-    return (health == FULL_HEALTH);
+    return (health < FULL_HEALTH);
+  }
+
+  public boolean isDead() {
+    return (health <= 0);
+  }
+
+  public boolean isAlive() {
+    return (health > 0);
+  }
+
+  public boolean hasGarlicBreath() {
+    return garlicBreath;
   }
 }

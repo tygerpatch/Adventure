@@ -23,11 +23,10 @@ public class RemoveCommand extends AbstractCommand {
       return;
     }
 
-    System.out.println("What item would you like to remove? " + player.knapsack);
+    System.out.print(player.knapsack + " What item would you like to remove? ");
 
-    Scanner scanner = new Scanner(System.in);
-    String strItem = scanner.next();
-    scanner.close();
+    Scanner scanner = adventure.getScanner();
+    String strItem = scanner.nextLine();
 
     Room currentRoom = adventure.getCurrentRoom();
 

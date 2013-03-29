@@ -57,6 +57,6 @@ public class ItemParser {
       }
     }
 
-    return Nothing;
+    return null;
   }
 }

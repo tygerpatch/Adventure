@@ -1,6 +1,7 @@
 package characters;
 
-import stuff.Knapsack;
+import java.util.Scanner;
+
 import stuff.Player;
 
 // A harmless sort of bloke.
@@ -13,7 +14,7 @@ public class Hunchback extends NonPlayableCharacter {
   @Override
   public void interactWith(Player player) {
     if(player.knapsack.isEmpty()) {
-      System.out.println("The hunchback just smiles at you as you walk out the door.");
+      System.out.println("The Hunchback just smiles at you as you walk out the door.");
     }
     else {
       int index = (int) (player.knapsack.size() * Math.random());
@@ -25,7 +26,7 @@ public class Hunchback extends NonPlayableCharacter {
 
   @Override
   public void clubbed() {
-    System.out.println("You bruise the Hunchback a little as you club him, but he is otherwise unharmed.");
+    System.out.println("The Hunchback lets out a pitiful moan as you club him, but he is otherwise unharmed.");
   }
 
   @Override
@@ -35,7 +36,7 @@ public class Hunchback extends NonPlayableCharacter {
 
   @Override
   public void staked() {
-    System.out.println("You suddenly feel sorry for the Hunchback and drop the wooden stake.");
+    System.out.println("You suddenly feel sorry for the Hunchback and drop the Wooden Stake to the floor.");
   }
 
   @Override
@@ -45,6 +46,15 @@ public class Hunchback extends NonPlayableCharacter {
 
   @Override
   public boolean isAlive() {
-    return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "Hunchback";
+  }
+
+  @Override
+  public void wakeUp() {
   }
 }

@@ -1,5 +1,7 @@
 package characters;
 
+import java.util.Scanner;
+
 import stuff.Player;
 
 // This is definitely a bad guy.
@@ -23,7 +25,6 @@ public class Troll extends NonPlayableCharacter implements BadGuy {
   }
 
   private boolean clubbed = false;
-  private boolean enchanted = false;
 
   @Override
   public void clubbed() {
@@ -34,21 +35,35 @@ public class Troll extends NonPlayableCharacter implements BadGuy {
   @Override
   public void shot() {
     System.out.println("You shoot the troll.");
-    System.out.println("Foul smelling blood oozes out of the wound, but the troll is still alive.");
+    System.out.println("Foul smelling blood oozes out of the wound, but the Troll is still alive.");
   }
 
   @Override
   public void staked() {
-    System.out.println("The Troll wimpers as you stake it through the heart, but doesn't die.");
+    System.out.println("The Troll goes 'Rrr..' and knocks the Wooden Stake out of your hands.");
   }
 
   @Override
   public void enchanted() {
-    enchanted = false;
+    enchanted = true;
+    System.out.println("You stunned the Troll with your Spell.");
   }
 
   @Override
   public boolean isAlive() {
-    return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return "Troll";
+  }
+
+  @Override
+  public void wakeUp() {
+    if(clubbed) {
+      clubbed = false;
+      System.out.println("The troll slowly gets up from his nap.");
+    }
   }
 }

@@ -1,10 +1,12 @@
 package commands.moving;
 
-import commands.AbstractCommand;
-
 import stuff.Adventure;
 import stuff.Player;
 import stuff.Room;
+import characters.NonPlayableCharacter;
+
+import commands.AbstractCommand;
+
 import enums.Direction;
 
 public abstract class AbstractMovementCommand extends AbstractCommand {
@@ -24,7 +26,16 @@ public abstract class AbstractMovementCommand extends AbstractCommand {
       // if the current room has an occupant
       if(currentRoom.hasOccupant()) {
         // then have the occupant interact with player before they enter the new room
-        currentRoom.getOccupant().interactWith(player);
+        NonPlayableCharacter npc = currentRoom.getOccupant();
+        npc.interactWith(player);
+
+        if(player.isDead()) {
+          adventure.setStillPlaying(false);
+          return;
+        }
+
+        npc.unenchant();
+        npc.wakeUp();
       }
 
       player.garlicBreath = false;
@@ -36,11 +47,15 @@ public abstract class AbstractMovementCommand extends AbstractCommand {
       int newRoom = doors[direction.ordinal()];
       currentRoom = castle[newRoom];
 
+      adventure.setCurrentRoom(currentRoom);
+
       // Tell the user what room he/she is in
       System.out.println("You are now in the " + currentRoom);
 
       // Tell the user what and/or who is in the room with you.
-      System.out.println("Items in the room: " + currentRoom.items);
+      if(!currentRoom.items.isEmpty()) {
+        System.out.println("Items in the room: " + currentRoom.items);
+      }
 
       if(currentRoom.hasOccupant()) {
         System.out.println("The room also has an occupant: " + currentRoom.getOccupant());
@@ -50,5 +65,4 @@ public abstract class AbstractMovementCommand extends AbstractCommand {
       player.updateHealth(0);
     }
   }
-
 }

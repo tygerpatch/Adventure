@@ -1,5 +1,9 @@
 package characters;
 
+import items.enums.DefensiveItem;
+
+import java.util.Scanner;
+
 import stuff.Player;
 
 // Again, not a good thing to run into.
@@ -35,28 +39,35 @@ public class Werewolf extends NonPlayableCharacter implements BadGuy {
   }
 
   private boolean alive = true;
-  private boolean enchanted = false;
 
   @Override
   public void shot() {
-    System.out.println("You killed the werewolf with the silver bullet.");
+    System.out.println("You killed the Werewolf with the " + DefensiveItem.SilverBullet);
     alive = false;
   }
 
   @Override
   public void staked() {
-    System.out.println("The werewolf wimpers as you stake it through the heart, but doesn't die.");
+    System.out.println("The Werewolf wimpers as you stake it through the heart, but doesn't die.");
   }
 
   @Override
   public void enchanted() {
     System.out.println("You enchant the werewolf with a spell");
     enchanted = true;
-    // TODO: pdf doesn't say when spells were off
   }
 
   @Override
   public boolean isAlive() {
     return alive;
+  }
+
+  @Override
+  public String toString() {
+    return "Werewolf";
+  }
+
+  @Override
+  public void wakeUp() {
   }
 }

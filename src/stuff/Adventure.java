@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Scanner;
 
 import util.ItemParser;
+import util.NonPlayableCharacterParser;
+import characters.NonPlayableCharacter;
 
 import commands.AbstractCommand;
 import commands.ContentsCommand;
@@ -80,8 +82,6 @@ public class Adventure {
     String description;
     Room room;
 
-    // TODO: use linked list, then convert to array
-    // TODO: store room.getNumber()
     while (NO_MORE_ROOMS != (node = scanner.nextInt())) {
       // create a new room with the given name and number
       room = new Room();
@@ -113,6 +113,7 @@ public class Adventure {
     int numItems;
     String strItem;
     Item item;
+    NonPlayableCharacter npc;
 
     // keep reading until end of stream is reached
     while (scanner.hasNextInt()) {
@@ -121,8 +122,16 @@ public class Adventure {
 
       for(int i = 0; i < numItems; i++) {
         strItem = scanner.next();
+
         item = ItemParser.parseString(strItem);
-        room.items.add(item);
+
+        if(null != item) {
+          room.items.add(item);
+        }
+        else {
+          npc = NonPlayableCharacterParser.parseString(strItem, this.scanner);
+          room.setOccupant(npc);
+        }
       }
     }
 
@@ -131,18 +140,8 @@ public class Adventure {
 
   private Player player = new Player();
 
-  private void processCommand(char ch) {
-    AbstractCommand command = mapCommands.get(Character.valueOf(ch));
-
-    if(null == command) {
-      System.out.println("I'm sorry. I don't understand that command.");
-      return;
-    }
-
-    command.execute();
-  }
-
   private boolean stillPlaying;
+  private Scanner scanner;
 
   public void play() {
     System.out.println("King: Find me my crown!");
@@ -159,29 +158,41 @@ public class Adventure {
 
     //Then use a loop that allows the user to interactively explore the castle
     // by entering one-letter directions (ex. E, e, W, w, N, n, S, s, F, f, D, d, Q, q).
-    Scanner scanner = new Scanner(System.in);
-    char command;
+    char ch;
     stillPlaying = true;
+    AbstractCommand command;
+
+    System.out.println(MENU.toString());
+    System.out.println();
 
     while (stillPlaying) {
-      System.out.println(MENU.toString());
-      System.out.println();
-      System.out.println("Enter command: ");
+      System.out.print("Enter command: ");
 
-      command = scanner.next().trim().charAt(0);
-      processCommand(command);
-    }
-    scanner.close();
+      ch = scanner.nextLine().trim().toUpperCase().charAt(0);
+      command = mapCommands.get(Character.valueOf(ch));
 
-    for(Item item : player.knapsack) {
-      if(item == MoveableItem.Crown) {
-        System.out.println("King: Hurray! You found my crown!");
-        return;
+      if(null == command) {
+        System.out.println("I'm sorry. I don't understand that command.");
+      }
+      else {
+        command.execute();
       }
     }
 
-    System.out.println("King: Where's my crown!\n");
-    System.out.println("Your head is chopped off by the King's executioner.  There's a lot of blood");
+    scanner.close();
+
+    if(player.isAlive()) {
+      for(Item item : player.knapsack) {
+        if(item == MoveableItem.Crown) {
+          System.out.println("King: Hurray! You found my crown!");
+          return;
+        }
+      }
+
+      System.out.println("King: Where's my crown!");
+      System.out.println("Your head is chopped off by the King's executioner.");
+      System.out.println("There's a lot of blood.");
+    }
   }
 
   public Room[] getCastle() {
@@ -207,6 +218,8 @@ public class Adventure {
   private Map<Character, AbstractCommand> mapCommands = new HashMap<Character, AbstractCommand>();
 
   public Adventure() {
+    scanner = new Scanner(System.in);
+
     // Use – use an item from the knapsack
     mapCommands.put(Character.valueOf('U'), new UseCommand(this));
 
@@ -242,12 +255,12 @@ public class Adventure {
     // West – move through the west door if there is one
     mapCommands.put(Character.valueOf('W'), new WestMovementCommand(this));
   }
+
+  public void setCurrentRoom(Room room) {
+    this.currentRoom = room;
+  }
+
+  public Scanner getScanner() {
+    return this.scanner;
+  }
 }
-
-// club
-// it would be funny if the player could club the wizard?
-// "The wizard was clubbed.  I hope your happy."
-
-// Vampire – If you have garlic, you can pass without losing health.
-// If you have a wooden stake, you can kill him.
-// woodenstack

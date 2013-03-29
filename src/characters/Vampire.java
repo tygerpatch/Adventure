@@ -1,5 +1,7 @@
 package characters;
 
+import java.util.Scanner;
+
 import stuff.Player;
 
 // A no-brainer bad guy.
@@ -41,7 +43,7 @@ public class Vampire extends NonPlayableCharacter implements BadGuy {
 
   @Override
   public void staked() {
-    System.out.println("The Vampire goes 'Ack!' as you stab a wooden stake through his heart.");
+    System.out.println("The Vampire goes 'Ack!' as you stab him through the heart.");
     System.out.println("The Vampire was killed.");
     alive = false;
   }
@@ -50,11 +52,20 @@ public class Vampire extends NonPlayableCharacter implements BadGuy {
 
   @Override
   public void enchanted() {
-    System.out.println("You try to cast a spell on the vampire, but it has no affect.");
+    System.out.println("You try to enchant the Vampire with the Spell, but it has no affect.");
   }
 
   @Override
   public boolean isAlive() {
     return alive;
+  }
+
+  @Override
+  public String toString() {
+    return "Vampire";
+  }
+
+  @Override
+  public void wakeUp() {
   }
 }

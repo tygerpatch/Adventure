@@ -40,6 +40,10 @@ public class Room {
     return occupant;
   }
 
+  public void setOccupant(NonPlayableCharacter occupant) {
+    this.occupant = occupant;
+  }
+
   public boolean hasDoor(Direction direction) {
     return (0 != doors[direction.ordinal()]);
   }
