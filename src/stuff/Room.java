@@ -57,4 +57,12 @@ public class Room {
   public int getNumber() {
     return number;
   }
+
+  public void setNumber(int num) {
+    this.number = num;
+  }
+
+  public String getName() {
+    return name;
+  }
 }
