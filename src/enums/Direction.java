@@ -41,4 +41,28 @@ public enum Direction {
 
     return null;
   }
+
+  public static Direction fromInteger(int i) {
+    if(Direction.North.ordinal() == i) {
+      return Direction.North;
+    }
+
+    if(Direction.East.ordinal() == i) {
+      return Direction.East;
+    }
+
+    if(Direction.South.ordinal() == i) {
+      return Direction.South;
+    }
+
+    if(Direction.West.ordinal() == i) {
+      return Direction.West;
+    }
+
+    return null;
+  }
+
+  public String getName() {
+    return this.name();
+  }
 }
