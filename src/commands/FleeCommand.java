@@ -1,10 +1,10 @@
 package commands;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Stack;
 
 import stuff.Adventure;
 import stuff.Room;
+import enums.Direction;
 
 public class FleeCommand extends AbstractCommand {
 
@@ -12,77 +12,107 @@ public class FleeCommand extends AbstractCommand {
     super(adventure);
   }
 
+  private class Node {
+    public int distance = Integer.MAX_VALUE;
+    public int fromRoom = 0;
+    public boolean visited = false;
+    public Direction direction = null;
+  }
+
   // Method that causes the user to flee to the starting room.
   // Will display each room that is visited to the console, but will not display the room's items or character.
+  // You are required to use Dijkstra’s Shortest Path algorithm when you flee.
+  // Your output should be the list of rooms, starting with the room you are in when you flee, and the directions taken through each room along your path.
+  // You are running so fast, that the characters in each of the rooms along your path cannot hurt you.
   @Override
   public void execute() {
-    // You are required to use Dijkstra’s Shortest Path algorithm when you flee.
-
-    // Your output should be the list of rooms, starting with the room you are in when you flee,
-    // and the directions taken through each room along your path.
-
-    // You are running so fast, that the characters in each of the rooms along your path cannot hurt you.
-
     Room[] castle = adventure.getCastle();
-    int[] distances = new int[castle.length];
-    int[] fromRoom = new int[castle.length];
-    boolean[] complete = new boolean[castle.length];
+    Node[] nodes = new Node[adventure.castleSize];
 
-    for(int node = 1; node < castle.length; node++) {
-      distances[node] = Integer.MAX_VALUE;
-      fromRoom[node] = 0;
-      complete[node] = false;
+    // Start by initializing all the distances to infinity.
+    for(int indx = 0; indx < nodes.length; indx++) {
+      nodes[indx] = new Node();
     }
 
-    Room currentRoom = adventure.getCurrentRoom();
-    int roomNumber = currentRoom.getNumber();
+    // Next we look at all the rooms we can get to from the current room.
+    Node node;
+    Room room = adventure.getCurrentRoom();
+    int[] doors = room.getDoors();
 
-    for(int door : currentRoom.getDoors()) {
-      distances[door] = 1;
-      fromRoom[door] = roomNumber;
+    for(int indx = 0; indx < 4; indx++) {
+      node = nodes[doors[indx]];
+
+      node.distance = 1;
+      node.fromRoom = room.getNumber();
+      node.direction = Direction.fromInteger(indx);
     }
-    complete[roomNumber] = true;
 
+    // We'll also mark this path as complete so that we don't process it again.
+    nodes[room.getNumber()].visited = true;
+
+    // All the remaining distances are going to be infinity because we have no paths to those yet.
+    // We then repeat the above process, starting at the vertex with the shortest distance.
     int shortestDistance = Integer.MAX_VALUE;
-    Room room = currentRoom;
     boolean done = false;
 
     while(!done) {
-      done = true;
+      done = true;  // indicates we have no more rooms to visit
 
-      for(int node = 1; node < castle.length; node++) {
-        if((!complete[node]) && (distances[node] < shortestDistance)) {
-          shortestDistance = distances[node];
-          room = castle[node];
-          roomNumber = room.getNumber();
-          done = false;
+      // Find the "closest" room we haven't visited yet.
+      for(int indx = 1; indx < nodes.length; indx++) {
+        if((!nodes[indx].visited) &&  (nodes[indx].distance < shortestDistance)) {
+          shortestDistance = nodes[indx].distance;
+          room = castle[indx];
+          done = false; // indicates we have another room to visit
         }
       }
 
-      for(int door : room.getDoors()) {
-        if(distances[door] > (distances[roomNumber] + 1)) {
-          distances[door] = distances[roomNumber] + 1;
-          fromRoom[door] = roomNumber;
+      // Update the information we have on each room this closest-room leads to.
+      doors = room.getDoors();
+      for(int indx = 0; indx < 4; indx++) {
+        node = nodes[doors[indx]];
+
+        if(node.distance > (nodes[room.getNumber()].distance + 1)) {
+          node.distance = nodes[room.getNumber()].distance + 1;;
+          node.fromRoom = room.getNumber();
+          node.direction = Direction.fromInteger(indx);
         }
       }
-      complete[roomNumber] = true;
+      nodes[room.getNumber()].visited = true;
+      shortestDistance = Integer.MAX_VALUE;
     }
 
-    List<String> output = new LinkedList<String>();
-    room = adventure.getEntranceHall();
-    int oldRoom;
+    // Starting from the Entrance Hall, work backwards until the current room is reached.
+    Room origin;
+    Room currentRoom = adventure.getCurrentRoom();
+    Room destination = adventure.getEntranceHall();
+    Direction direction;
+    StringBuilder strBuilder = new StringBuilder();
+    Stack<String> stack = new Stack<String>();
 
-    while(room != currentRoom) {
-      roomNumber = room.getNumber();
-      oldRoom = fromRoom[roomNumber];
-      output.add("You flee from the " + castle[oldRoom] + " to the " + room);
-      room = castle[oldRoom];
+    while(destination != currentRoom) {
+      node = nodes[destination.getNumber()];
+      origin = castle[node.fromRoom];
+      direction = node.direction;
+
+      strBuilder.delete(0, strBuilder.length());
+      strBuilder.append("From the ");
+      strBuilder.append(origin.getName());
+      strBuilder.append(" you open the door on the ");
+      strBuilder.append(direction.getName());
+      strBuilder.append("-side and enter the ");
+      strBuilder.append(destination.getName());
+      strBuilder.append(".");
+
+      stack.push(strBuilder.toString());
+
+      destination = origin;
     }
 
-    for(int i = output.size(); i > 0; i--) {
-      System.out.println(output.get(i));
+    // Display the paths to take to get from the current room to the Entrance Hall.
+    while(!stack.isEmpty()) {
+      System.out.println(stack.pop());
     }
-
     adventure.setStillPlaying(false);
   }
 }
