@@ -72,6 +72,7 @@ public class Adventure {
   public static final int NO_MORE_PASSAGES = 99;
 
   private Room currentRoom, entranceHall;
+  public int castleSize = 1;
 
   public void loadCastle(String filePath) throws IOException {
     Scanner scanner = new Scanner(new File(filePath));
@@ -87,8 +88,9 @@ public class Adventure {
       room = new Room();
       description = scanner.nextLine().trim();
       room.setName(description);
-
+      castleSize++;
       castle[node] = room;
+      room.setNumber(node);
 
       // The user starts in the Entrance Hallway.
       if ("Entrance Hall".equalsIgnoreCase(description)) {
