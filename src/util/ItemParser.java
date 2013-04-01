@@ -1,19 +1,19 @@
 package util;
 
-import static items.enums.DefensiveItem.Club;
-import static items.enums.DefensiveItem.SilverBullet;
-import static items.enums.DefensiveItem.Spell;
-import static items.enums.DefensiveItem.WoodenStake;
-import static items.enums.DrinkableHealthItem.Elixir;
-import static items.enums.EatableDefensiveItem.Garlic;
-import static items.enums.EatableHealthItem.Bread;
-import static items.enums.MoveableItem.Crown;
-import static items.enums.MoveableItem.Goblet;
-import static items.enums.MoveableItem.Jewel;
-import static items.enums.MoveableItem.Tome;
-import static items.enums.UnmoveableItem.Candle;
-import static items.enums.UnmoveableItem.Nothing;
-import static items.enums.UnmoveableItem.Table;
+import items.classes.Bread;
+import items.classes.Candle;
+import items.classes.Club;
+import items.classes.Crown;
+import items.classes.Elixir;
+import items.classes.Garlic;
+import items.classes.Goblet;
+import items.classes.Jewel;
+import items.classes.Nothing;
+import items.classes.SilverBullet;
+import items.classes.Spell;
+import items.classes.Table;
+import items.classes.Tome;
+import items.classes.WoodenStake;
 import items.interfacees.Item;
 
 import java.util.LinkedList;
@@ -24,35 +24,35 @@ public class ItemParser {
 
   static {
     // Defensive Items
-    items.add(Club);
-    items.add(SilverBullet);
-    items.add(Spell);
-    items.add(WoodenStake);
+    items.add(new Club());
+    items.add(new SilverBullet());
+    items.add(new Spell());
+    items.add(new WoodenStake());
 
     // Drinkable Health Items
-    items.add(Elixir);
+    items.add(new Elixir());
 
     // Eatable Defensive Items
-    items.add(Garlic);
+    items.add(new Garlic());
 
     // Eatable Health Item
-    items.add(Bread);
+    items.add(new Bread());
 
     // Moveable Items
-    items.add(Crown);
-    items.add(Goblet);
-    items.add(Jewel);
-    items.add(Tome);
+    items.add(new Crown());
+    items.add(new Goblet());
+    items.add(new Jewel());
+    items.add(new Tome());
 
     // Unmoveable Items
-    items.add(Candle);
-    items.add(Table);
-    items.add(Nothing);
+    items.add(new Candle());
+    items.add(new Table());
+    items.add(new Nothing());
   }
 
   public static Item parseString(String strItem) {
     for(Item item : items) {
-      if(item.name().equalsIgnoreCase(strItem)) {
+      if(item.getName().equalsIgnoreCase(strItem)) {
         return item;
       }
     }
