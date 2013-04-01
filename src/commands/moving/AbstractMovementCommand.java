@@ -3,6 +3,7 @@ package commands.moving;
 import stuff.Adventure;
 import stuff.Player;
 import stuff.Room;
+import characters.BadGuy;
 import characters.NonPlayableCharacter;
 
 import commands.AbstractCommand;
@@ -27,18 +28,27 @@ public abstract class AbstractMovementCommand extends AbstractCommand {
       if(currentRoom.hasOccupant()) {
         // then have the occupant interact with player before they enter the new room
         NonPlayableCharacter npc = currentRoom.getOccupant();
-        npc.interactWith(player);
+
+        if(npc instanceof BadGuy) {
+          BadGuy badGuy = (BadGuy) npc;
+
+          if(badGuy.isBlockingDoor()) {
+            npc.interactWith(player);
+          }
+          else {
+            badGuy.setBlockingDoor(true);
+          }
+        }
+        else {
+          npc.interactWith(player);
+        }
 
         if(player.isDead()) {
           adventure.setStillPlaying(false);
           return;
         }
 
-        npc.unenchant();
-        npc.wakeUp();
       }
-
-      player.garlicBreath = false;
 
       Room[] castle = adventure.getCastle();
 
@@ -58,7 +68,7 @@ public abstract class AbstractMovementCommand extends AbstractCommand {
       }
 
       if(currentRoom.hasOccupant()) {
-        System.out.println("The room also has an occupant: " + currentRoom.getOccupant());
+        System.out.println("The room also has an occupant: " + currentRoom.getOccupant().getName());
       }
 
       // When you move to a new room, your health should be displayed.
