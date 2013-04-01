@@ -1,7 +1,7 @@
 package stuff;
 
-import items.enums.UnmoveableItem;
 import items.interfacees.Item;
+import items.interfacees.Unmoveable;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -25,7 +25,7 @@ public class Knapsack implements Iterable<Item> {
      return false;
     }
 
-    if(item instanceof UnmoveableItem) {
+    if(item instanceof Unmoveable) {
      System.out.println(item + " is an unmoveable item.");
      return false;
     }
