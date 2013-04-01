@@ -1,8 +1,8 @@
 package stuff;
 
-import items.enums.DrinkableHealthItem;
-import items.enums.EatableDefensiveItem;
-import items.enums.EatableHealthItem;
+import items.classes.Bread;
+import items.classes.Elixir;
+import items.classes.Garlic;
 import items.interfacees.Drinkable;
 import items.interfacees.Eatable;
 
@@ -26,7 +26,7 @@ public class Player {
   // ex. player.drink(Elixir)
   public void drink(Drinkable drink) {
     // elixir (good for 25 points of health, only when you apply it)
-    if(drink == DrinkableHealthItem.Elixir) {
+    if(drink instanceof Elixir) {
       knapsack.removeItem(drink);
       System.out.println("You drank the " + drink);
       updateHealth(25);
@@ -34,20 +34,19 @@ public class Player {
   }
 
   public void eat(Eatable food) {
-    if(food == EatableDefensiveItem.Garlic) {
+    if(food instanceof Garlic) {
       // You can keep and reuse garlic
       System.out.println("You ate some Garlic.");
-      garlicBreath = true;
     }
     // bread (good for 10 points of health, only when you apply it)
-    else if(food == EatableHealthItem.Bread) {
+    else if(food instanceof Bread) {
       knapsack.removeItem(food);
       System.out.println("You ate the Bread.");
       updateHealth(10);
     }
   }
 
-  public boolean garlicBreath = false;
+  //public boolean garlicBreath = false;
 
   public void died() {
     System.out.println("You died.");
@@ -67,9 +66,5 @@ public class Player {
 
   public boolean isAlive() {
     return (health > 0);
-  }
-
-  public boolean hasGarlicBreath() {
-    return garlicBreath;
   }
 }
