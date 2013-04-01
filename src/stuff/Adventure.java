@@ -1,6 +1,6 @@
 package stuff;
 
-import items.enums.MoveableItem;
+import items.classes.Crown;
 import items.interfacees.Item;
 
 import java.io.File;
@@ -155,7 +155,7 @@ public class Adventure {
     System.out.println("Items in the room: " + currentRoom.items);
 
     if(currentRoom.hasOccupant()) {
-      System.out.println("The room also has an occupant: " + currentRoom.getOccupant());
+      System.out.println("The room also has an occupant: " + currentRoom.getOccupant().getName());
     }
 
     //Then use a loop that allows the user to interactively explore the castle
@@ -185,7 +185,7 @@ public class Adventure {
 
     if(player.isAlive()) {
       for(Item item : player.knapsack) {
-        if(item == MoveableItem.Crown) {
+        if(item instanceof Crown) {
           System.out.println("King: Hurray! You found my crown!");
           return;
         }
