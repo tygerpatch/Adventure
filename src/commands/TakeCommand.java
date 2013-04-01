@@ -36,7 +36,7 @@ public class TakeCommand extends AbstractCommand {
 
     for (Item item : currentRoom.items) {
       // if this is the item that the user selected
-      if (item.name().equalsIgnoreCase(strItem)) {
+      if (item.getName().equalsIgnoreCase(strItem)) {
         if (player.knapsack.addItem(item)) {
           currentRoom.items.remove(item);
         }
