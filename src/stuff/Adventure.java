@@ -64,8 +64,7 @@ public class Adventure {
   }
 
   // Rooms will be numbered consecutively, starting at 1, with a maximum of 98 rooms.
-  private static final int MAX_NUMBER_OF_ROOMS = (98 + 1);
-  private Room[] castle;//  = new Room[MAX_NUMBER_OF_ROOMS];
+  private Room[] castle;
 
   // 99 indicating no more rooms
   public static final int NO_MORE_ROOMS = 99;
