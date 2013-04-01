@@ -1,7 +1,5 @@
 package characters;
 
-import java.util.Scanner;
-
 import stuff.Player;
 
 // A no-brainer bad guy.
@@ -19,53 +17,27 @@ public class Vampire extends NonPlayableCharacter implements BadGuy {
     player.updateHealth(-25);
   }
 
+  private boolean isBlockingDoor = true;
+
+  public void setBlockingDoor(boolean isBlockingDoor) {
+    this.isBlockingDoor = isBlockingDoor;
+  }
+
+  public boolean isBlockingDoor() {
+    return isBlockingDoor;
+  }
+
   // *** NonPlayableCharacter abstract class
   @Override
   public void interactWith(Player player) {
-    if(player.garlicBreath) {
-      System.out.println("Smelling the garlic on your breath, the Vampire gives you plenty of room to slip past him.");
-      return;
+    if(isBlockingDoor) {
+      damage(player);
     }
-
-    damage(player);
   }
 
+  // *** Both BadGuy interface and NonPlayableCharacter abstract class
   @Override
-  public void clubbed() {
-    System.out.println("You bruise the Vampire a little as you club him, but he is otherwise unharmed.");
-  }
-
-  @Override
-  public void shot() {
-    System.out.println("You shoot the vampire.");
-    System.out.println("Foul smelling blood oozes out of the wound, but the vampire is still alive.");
-  }
-
-  @Override
-  public void staked() {
-    System.out.println("The Vampire goes 'Ack!' as you stab him through the heart.");
-    System.out.println("The Vampire was killed.");
-    alive = false;
-  }
-
-  private boolean alive = true;
-
-  @Override
-  public void enchanted() {
-    System.out.println("You try to enchant the Vampire with the Spell, but it has no affect.");
-  }
-
-  @Override
-  public boolean isAlive() {
-    return alive;
-  }
-
-  @Override
-  public String toString() {
+  public String getName() {
     return "Vampire";
-  }
-
-  @Override
-  public void wakeUp() {
   }
 }

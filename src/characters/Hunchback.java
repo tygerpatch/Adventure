@@ -1,7 +1,5 @@
 package characters;
 
-import java.util.Scanner;
-
 import stuff.Player;
 
 // A harmless sort of bloke.
@@ -18,43 +16,12 @@ public class Hunchback extends NonPlayableCharacter {
     }
     else {
       int index = (int) (player.knapsack.size() * Math.random());
-
-      // The hunchback steals your (bread, spell, garlic, silver-bullet)
       System.out.println("The hunchback stole your " + player.knapsack.removeItem(index));
     }
   }
 
   @Override
-  public void clubbed() {
-    System.out.println("The Hunchback lets out a pitiful moan as you club him, but he is otherwise unharmed.");
-  }
-
-  @Override
-  public void shot() {
-    System.out.println("Just as you pull the trigger the Hunchback steps out of the way, missing him by only a few inches.");
-  }
-
-  @Override
-  public void staked() {
-    System.out.println("You suddenly feel sorry for the Hunchback and drop the Wooden Stake to the floor.");
-  }
-
-  @Override
-  public void enchanted() {
-    System.out.println("You try to enchant the Hunchback, but nothing seems to happen.");
-  }
-
-  @Override
-  public boolean isAlive() {
-    return true;
-  }
-
-  @Override
-  public String toString() {
+  public String getName() {
     return "Hunchback";
-  }
-
-  @Override
-  public void wakeUp() {
   }
 }

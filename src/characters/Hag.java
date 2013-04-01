@@ -5,7 +5,6 @@ import items.interfacees.Item;
 import java.util.Scanner;
 
 import stuff.Player;
-import stuff.Room;
 
 // A Hag can be good or bad depending on your perspective.
 // You must give her something out of your knapsack or she will take 10 points from your health.
@@ -26,6 +25,18 @@ public class Hag extends NonPlayableCharacter implements BadGuy {
     player.updateHealth(-10);
   }
 
+  private boolean isBlockingDoor = true;
+
+  @Override
+  public void setBlockingDoor(boolean isBlockingDoor) {
+    this.isBlockingDoor = isBlockingDoor;
+  }
+
+  @Override
+  public boolean isBlockingDoor() {
+    return isBlockingDoor;
+  }
+
   // *** NonPlayableCharacter abstract class
   @Override
   public void interactWith(Player player) {
@@ -41,7 +52,7 @@ public class Hag extends NonPlayableCharacter implements BadGuy {
       String strItem = scanner.nextLine();
 
       for (Item item : player.knapsack) {
-        if (item.name().equalsIgnoreCase(strItem)) {
+        if (item.getName().equalsIgnoreCase(strItem)) {
           player.knapsack.removeItem(item);
           return;
         }
@@ -51,37 +62,9 @@ public class Hag extends NonPlayableCharacter implements BadGuy {
     }
   }
 
+  // *** Both BadGuy interface and NonPlayableCharacter abstract class
   @Override
-  public void clubbed() {
-    System.out.println("You suddenly have second thoughts about clubbing the Hag and decide not to do it.");
-  }
-
-  @Override
-  public void shot() {
-    System.out.println("Just as you pull the trigger the Hag steps out of the way, missing her by only a few inches.");
-  }
-
-  @Override
-  public void staked() {
-    System.out.println("You suddenly feel sorry for the Hag and drop the Wooden Stake to the floor.");
-  }
-
-  @Override
-  public void enchanted() {
-    System.out.println("The Hag cackles as your attempt to enchant her fails.");
-  }
-
-  @Override
-  public boolean isAlive() {
-    return true;
-  }
-
-  @Override
-  public String toString() {
+  public String getName() {
     return "Hag";
-  }
-
-  @Override
-  public void wakeUp() {
   }
 }

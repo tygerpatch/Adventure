@@ -1,7 +1,5 @@
 package characters;
 
-import java.util.Scanner;
-
 import stuff.Player;
 
 // This is definitely a bad guy.
@@ -16,54 +14,28 @@ public class Troll extends NonPlayableCharacter implements BadGuy {
     player.updateHealth(-10);
   }
 
+  private boolean isBlockingDoor = true;
+
+  public void setBlockingDoor(boolean isBlockingDoor) {
+    this.isBlockingDoor = isBlockingDoor;
+  }
+
+  @Override
+  public boolean isBlockingDoor() {
+    return isBlockingDoor;
+  }
+
   // *** NonPlayableCharacter abstract class
   @Override
   public void interactWith(Player player) {
-    if(!clubbed && !enchanted) {
+    if(isBlockingDoor) {
       damage(player);
     }
   }
 
-  private boolean clubbed = false;
-
+  // *** Both BadGuy interface and NonPlayableCharacter abstract class
   @Override
-  public void clubbed() {
-    System.out.println("You club the Troll unconscious.");
-    clubbed = true;
-  }
-
-  @Override
-  public void shot() {
-    System.out.println("You shoot the troll.");
-    System.out.println("Foul smelling blood oozes out of the wound, but the Troll is still alive.");
-  }
-
-  @Override
-  public void staked() {
-    System.out.println("The Troll goes 'Rrr..' and knocks the Wooden Stake out of your hands.");
-  }
-
-  @Override
-  public void enchanted() {
-    enchanted = true;
-    System.out.println("You stunned the Troll with your Spell.");
-  }
-
-  @Override
-  public boolean isAlive() {
-    return true;
-  }
-
-  @Override
-  public String toString() {
+  public String getName() {
     return "Troll";
-  }
-
-  @Override
-  public void wakeUp() {
-    if(clubbed) {
-      clubbed = false;
-      System.out.println("The troll slowly gets up from his nap.");
-    }
   }
 }

@@ -1,9 +1,5 @@
 package characters;
 
-import items.enums.DefensiveItem;
-
-import java.util.Scanner;
-
 import stuff.Player;
 
 // Again, not a good thing to run into.
@@ -19,55 +15,27 @@ public class Werewolf extends NonPlayableCharacter implements BadGuy {
     player.died();
   }
 
+  private boolean isBlockingDoor = true;
+
+  public void setBlockingDoor(boolean isBlockingDoor) {
+    this.isBlockingDoor = isBlockingDoor;
+  }
+
+  public boolean isBlockingDoor() {
+    return isBlockingDoor;
+  }
+
   // *** NonPlayableCharacter abstract class
   @Override
   public void interactWith(Player player) {
-    if(alive) {
-      if(enchanted) {
-        System.out.println("You were able to slip past the werewolf with a spell.");
-      }
-      else {
-        damage(player);
-      }
+    if(isBlockingDoor) {
+      damage(player);
     }
   }
 
+  // *** Both BadGuy interface and NonPlayableCharacter abstract class
   @Override
-  public void clubbed() {
-    System.out.println("You desperately try to club the werewolf to death, but nothing happens.");
-    System.out.println("The werewolf just stares at you growling.");
-  }
-
-  private boolean alive = true;
-
-  @Override
-  public void shot() {
-    System.out.println("You killed the Werewolf with the " + DefensiveItem.SilverBullet);
-    alive = false;
-  }
-
-  @Override
-  public void staked() {
-    System.out.println("The Werewolf wimpers as you stake it through the heart, but doesn't die.");
-  }
-
-  @Override
-  public void enchanted() {
-    System.out.println("You enchant the werewolf with a spell");
-    enchanted = true;
-  }
-
-  @Override
-  public boolean isAlive() {
-    return alive;
-  }
-
-  @Override
-  public String toString() {
+  public String getName() {
     return "Werewolf";
-  }
-
-  @Override
-  public void wakeUp() {
   }
 }
