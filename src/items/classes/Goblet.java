@@ -1,9 +1,8 @@
 package items.classes;
 
 import items.interfacees.Item;
-import items.interfacees.Moveable;
 
-public class Goblet implements Moveable, Item {
+public class Goblet implements Item {
 
   @Override
   public String toString() {

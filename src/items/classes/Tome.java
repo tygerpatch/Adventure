@@ -1,9 +1,8 @@
 package items.classes;
 
 import items.interfacees.Item;
-import items.interfacees.Moveable;
 
-public class Tome implements Moveable, Item {
+public class Tome implements Item {
 
   @Override
   public String toString() {

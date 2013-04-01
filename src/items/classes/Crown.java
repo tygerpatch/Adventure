@@ -1,9 +1,8 @@
 package items.classes;
 
 import items.interfacees.Item;
-import items.interfacees.Moveable;
 
-public class Crown implements Moveable, Item {
+public class Crown implements Item {
 
   @Override
   public String toString() {
