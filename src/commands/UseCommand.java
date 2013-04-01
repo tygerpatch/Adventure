@@ -1,15 +1,17 @@
 package commands;
 
-import items.enums.DefensiveItem;
+import items.interfacees.Defensive;
 import items.interfacees.Drinkable;
 import items.interfacees.Eatable;
 import items.interfacees.Item;
+import items.interfacees.Moveable;
 
 import java.util.Scanner;
 
 import stuff.Adventure;
 import stuff.Player;
 import stuff.Room;
+import characters.BadGuy;
 import characters.NonPlayableCharacter;
 
 public class UseCommand extends AbstractCommand {
@@ -34,46 +36,43 @@ public class UseCommand extends AbstractCommand {
     String strItem = scanner.nextLine();
 
     for (Item item : player.knapsack) {
-      if (item.name().equalsIgnoreCase(strItem)) {
-        if (item instanceof Drinkable) {
-          player.drink((Drinkable) item);
-        }
-        else if (item instanceof Eatable) {
-          player.eat((Eatable) item);
-        }
-        else if (item instanceof DefensiveItem) {
-          Room currentRoom = adventure.getCurrentRoom();
-
-          if(currentRoom.hasOccupant()) {
-            NonPlayableCharacter occupant = currentRoom.getOccupant();
-
-            if (item == DefensiveItem.Club) {
-              // You can keep and reuse the club.
-              occupant.clubbed();
-            }
-            else if (item == DefensiveItem.SilverBullet) {
-              // The silver bullet may only be used once.
-              player.knapsack.removeItem(item);
-              occupant.shot();
-            }
-            else if (item == DefensiveItem.WoodenStake) {
-              // The wooden stake may only be used once.
-              player.knapsack.removeItem(item);
-              occupant.staked();
-            }
-            else if (item == DefensiveItem.Spell) {
-              // Once a spell is used, it is spent. It simply goes away.
-              player.knapsack.removeItem(item);
-              occupant.enchanted();
-            }
-          }
-          else {
-            System.out.println("There is nothing in the room to defend against.");
-          }
-        }
-        else {
-          // MoveableItems: Crown, Goblet, Jewel, Tome
+      if (item.getName().equalsIgnoreCase(strItem)) {
+        // MoveableItems: Crown, Goblet, Jewel, Tome
+        if(item instanceof Moveable) {
           System.out.println("That item cannot be used here.");
+          return;
+        }
+
+        if (item instanceof Drinkable) {
+          Drinkable beverage = (Drinkable) item;
+          player.drink(beverage);
+        }
+
+        if (item instanceof Eatable) {
+          Eatable food = (Eatable) item;
+          player.eat(food);
+        }
+
+        // I left the return statement out of the above two if statements in case in future items there is a Drinkable-Defensive-Item or an Eatable-Defensive-Item.
+
+        if(item instanceof Defensive) {
+          Room room = adventure.getCurrentRoom();
+
+          if(room.hasOccupant()) {
+            NonPlayableCharacter npc = room.getOccupant();
+
+            if(npc instanceof BadGuy) {
+              BadGuy badGuy = (BadGuy) npc;
+
+              if(((Defensive) item).useOn(badGuy)) {
+                room.setOccupant(null);
+              }
+
+              return;
+            }
+          }
+
+          System.out.println("There is nothing in the room to defend against.");
         }
 
         return;
