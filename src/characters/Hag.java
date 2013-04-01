@@ -10,7 +10,7 @@ import stuff.Player;
 // You must give her something out of your knapsack or she will take 10 points from your health.
 // You should present the contents of the knapsack and let the user decide what to give her.
 // Spells do not work on her.
-public class Hag extends NonPlayableCharacter implements BadGuy {
+public class Hag extends BadGuy implements NonPlayableCharacter {
 
   private Scanner scanner;
 
@@ -18,26 +18,14 @@ public class Hag extends NonPlayableCharacter implements BadGuy {
     this.scanner = scanner;
   }
 
-  // *** BadGuy interface
+  // *** BadGuy abstract class
   @Override
   public void damage(Player player) {
     System.out.println("You recieve damage from the Hag.");
     player.updateHealth(-10);
   }
 
-  private boolean isBlockingDoor = true;
-
-  @Override
-  public void setBlockingDoor(boolean isBlockingDoor) {
-    this.isBlockingDoor = isBlockingDoor;
-  }
-
-  @Override
-  public boolean isBlockingDoor() {
-    return isBlockingDoor;
-  }
-
-  // *** NonPlayableCharacter abstract class
+  // *** NonPlayableCharacter interface
   @Override
   public void interactWith(Player player) {
     if(player.knapsack.isEmpty()) {
@@ -62,7 +50,7 @@ public class Hag extends NonPlayableCharacter implements BadGuy {
     }
   }
 
-  // *** Both BadGuy interface and NonPlayableCharacter abstract class
+  // *** Both BadGuy abstract class and NonPlayableCharacter interface
   @Override
   public String getName() {
     return "Hag";

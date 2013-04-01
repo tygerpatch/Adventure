@@ -8,9 +8,9 @@ import stuff.Player;
 // He will give you a spell.
 // You do not need to defend yourself against him.
 // He will also give you 5 points for health.
-public class Wizard extends NonPlayableCharacter {
+public class Wizard implements NonPlayableCharacter {
 
-  // *** NonPlayableCharacter abstract class
+  // *** NonPlayableCharacter interface
   @Override
   public void interactWith(Player player) {
     if(player.knapsack.size() < Knapsack.MAXIMUM_ALLOWABLE_ITEMS_IN_KNAPSACK) {

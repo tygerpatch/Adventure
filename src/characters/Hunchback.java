@@ -6,9 +6,9 @@ import stuff.Player;
 // Doesn’t hurt you, but he steals something from your bag.
 // What gets stolen is random.  You do not get to chose.
 // They’re just too dumb for spells to work on.
-public class Hunchback extends NonPlayableCharacter {
+public class Hunchback implements NonPlayableCharacter {
 
-  // *** NonPlayableCharacter abstract class
+  // *** NonPlayableCharacter interface
   @Override
   public void interactWith(Player player) {
     if(player.knapsack.isEmpty()) {

@@ -3,9 +3,17 @@ package characters;
 import stuff.Player;
 
 // There are good and bad guys. Bad guys damage player.
-public interface BadGuy {
-  public void damage(Player player);
-  public void setBlockingDoor(boolean isBlockingDoor);
-  public boolean isBlockingDoor();
-  public String getName();
+public abstract class BadGuy {
+  public abstract void damage(Player player);
+  public abstract String getName();
+
+  private boolean isBlockingDoor = true;
+
+  public void setBlockingDoor(boolean isBlockingDoor) {
+    this.isBlockingDoor = isBlockingDoor;
+  }
+
+  public boolean isBlockingDoor() {
+    return isBlockingDoor;
+  }
 }
