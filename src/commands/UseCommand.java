@@ -4,7 +4,6 @@ import items.interfacees.Defensive;
 import items.interfacees.Drinkable;
 import items.interfacees.Eatable;
 import items.interfacees.Item;
-import items.interfacees.Moveable;
 
 import java.util.Scanner;
 
@@ -37,20 +36,18 @@ public class UseCommand extends AbstractCommand {
 
     for (Item item : player.knapsack) {
       if (item.getName().equalsIgnoreCase(strItem)) {
-        // MoveableItems: Crown, Goblet, Jewel, Tome
-        if(item instanceof Moveable) {
-          System.out.println("That item cannot be used here.");
-          return;
-        }
+        boolean isUseableItem = false;
 
         if (item instanceof Drinkable) {
           Drinkable beverage = (Drinkable) item;
           player.drink(beverage);
+          isUseableItem = true;
         }
 
         if (item instanceof Eatable) {
           Eatable food = (Eatable) item;
           player.eat(food);
+          isUseableItem = true;
         }
 
         // I left the return statement out of the above two if statements in case in future items there is a Drinkable-Defensive-Item or an Eatable-Defensive-Item.
@@ -63,6 +60,7 @@ public class UseCommand extends AbstractCommand {
 
             if(npc instanceof BadGuy) {
               BadGuy badGuy = (BadGuy) npc;
+              isUseableItem = true;
 
               if(((Defensive) item).useOn(badGuy)) {
                 room.setOccupant(null);
@@ -73,6 +71,11 @@ public class UseCommand extends AbstractCommand {
           }
 
           System.out.println("There is nothing in the room to defend against.");
+        }
+
+        if(!isUseableItem) {
+          // MoveableItems: Crown, Goblet, Jewel, Tome
+          System.out.println("That item cannot be used here.");
         }
 
         return;
