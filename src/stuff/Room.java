@@ -49,7 +49,7 @@ public class Room {
   }
 
   public boolean hasOccupant() {
-    return ((occupant != null) && (occupant.isAlive()));
+    return (occupant != null);
   }
 
   private int number = 0;
