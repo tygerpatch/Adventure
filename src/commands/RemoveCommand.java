@@ -31,7 +31,7 @@ public class RemoveCommand extends AbstractCommand {
     Room currentRoom = adventure.getCurrentRoom();
 
     for (Item item : player.knapsack) {
-      if (item.name().equalsIgnoreCase(strItem)) {
+      if (item.getName().equalsIgnoreCase(strItem)) {
         currentRoom.items.add(item);
         player.knapsack.removeItem(item);
         return;
