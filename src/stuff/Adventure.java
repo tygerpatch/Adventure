@@ -6,6 +6,8 @@ import items.interfacees.Item;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -63,7 +65,7 @@ public class Adventure {
 
   // Rooms will be numbered consecutively, starting at 1, with a maximum of 98 rooms.
   private static final int MAX_NUMBER_OF_ROOMS = (98 + 1);
-  private Room[] castle = new Room[MAX_NUMBER_OF_ROOMS];
+  private Room[] castle;//  = new Room[MAX_NUMBER_OF_ROOMS];
 
   // 99 indicating no more rooms
   public static final int NO_MORE_ROOMS = 99;
@@ -72,7 +74,6 @@ public class Adventure {
   public static final int NO_MORE_PASSAGES = 99;
 
   private Room currentRoom, entranceHall;
-  public int castleSize = 1;
 
   public void loadCastle(String filePath) throws IOException {
     Scanner scanner = new Scanner(new File(filePath));
@@ -82,21 +83,25 @@ public class Adventure {
     int node;
     String description;
     Room room;
+    List<Room> rooms = new LinkedList<Room>();
 
     while (NO_MORE_ROOMS != (node = scanner.nextInt())) {
       // create a new room with the given name and number
       room = new Room();
       description = scanner.nextLine().trim();
+
       room.setName(description);
-      castleSize++;
-      castle[node] = room;
       room.setNumber(node);
+
+      rooms.add(room);
 
       // The user starts in the Entrance Hallway.
       if ("Entrance Hall".equalsIgnoreCase(description)) {
         currentRoom = entranceHall = room;
       }
     }
+
+    castle = (Room[]) rooms.toArray();
 
     // Step 2: Read in all the passages in the castle
     // Indicated by triplets (room#, room#, direction): integer, integer, 1 character
