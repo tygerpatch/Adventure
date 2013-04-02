@@ -1,43 +1,52 @@
 package commands;
 
-import items.interfacees.Item;
+import items.classes.Bread;
+import items.classes.Garlic;
+import items.classes.Item;
 
 import java.util.Scanner;
 
-import stuff.Adventure;
-import stuff.Player;
+import stuff.Knapsack;
 import stuff.Room;
 
-public class RemoveCommand extends AbstractCommand {
+public class RemoveCommand {
 
-  public RemoveCommand(Adventure adventure) {
-    super(adventure);
-  }
-
-  @Override
-  public void execute() {
-    Player player = adventure.getPlayer();
-
-    if (player.knapsack.isEmpty()) {
-      System.out.println("You do not have anything in your knapsack.");
+  public void execute(Knapsack knapsack, Scanner scanner, Room room) {
+    if (knapsack.isEmpty()) {
+      System.out.println("You do not have anything in your Knapsack.");
       return;
     }
 
-    System.out.print(player.knapsack + " What item would you like to remove? ");
+    System.out.print(knapsack + " What item would you like to remove? ");
+    String str = scanner.nextLine();
 
-    Scanner scanner = adventure.getScanner();
-    String strItem = scanner.nextLine();
-
-    Room currentRoom = adventure.getCurrentRoom();
-
-    for (Item item : player.knapsack) {
-      if (item.getName().equalsIgnoreCase(strItem)) {
-        currentRoom.items.add(item);
-        player.knapsack.removeItem(item);
+    for (Item item : knapsack) {
+      if (item.getName().equalsIgnoreCase(str)) {
+        room.addItem(item);
+        knapsack.removeItem(item);
         return;
       }
     }
 
-    System.out.println("You do not have that item in your knapsack.");
+    System.out.println("You do not have that item in your Knapsack.");
+  }
+
+  public static void main(String[] args) {
+    RemoveCommand command = new RemoveCommand();
+    Knapsack knapsack = new Knapsack();
+    Scanner scanner = new Scanner(System.in);
+    Room room = new Room();
+
+    System.out.println("-- Test trying to remove an Item from an empty Knapsack --");
+    command.execute(knapsack, scanner, room);
+
+    System.out.println("-- Add some Items to your Knapsack --");
+    knapsack.addItem(new Garlic());
+    knapsack.addItem(new Bread());
+
+    System.out.println("-- Test trying to remove an Item from Knapsack --");
+    command.execute(knapsack, scanner, room);
+    System.out.println("Contents of Knapsack: " + knapsack);
+    System.out.println("Items in Room: " + room.getItems());
   }
 }
