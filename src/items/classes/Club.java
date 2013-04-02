@@ -1,24 +1,23 @@
 package items.classes;
 
 import items.interfacees.Defensive;
-import items.interfacees.Item;
 import characters.BadGuy;
 import characters.Troll;
 
-public class Club  implements Defensive, Item{
+public class Club extends Item implements Defensive {
+
+  // *** Item
+  @Override
+  public String getName() {
+    return "Club";
+  }
 
   @Override
   public String toString() {
     return getName();
   }
 
-  // *** interface Item
-  @Override
-  public String getName() {
-    return "Club";
-  }
-
-  // *** interface Defensive
+  // *** Defensive
   @Override
   public boolean useOn(BadGuy badGuy) {
     // You can get past Trolls with a Club.

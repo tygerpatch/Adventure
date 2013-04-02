@@ -1,17 +1,15 @@
 package items.classes;
 
-import items.interfacees.Item;
+public class Crown extends Item {
 
-public class Crown implements Item {
+  // *** Item
+  @Override
+  public String getName() {
+    return "Crown";
+  }
 
   @Override
   public String toString() {
     return getName();
-  }
-
-  // *** interface Item
-  @Override
-  public String getName() {
-    return "Crown";
   }
 }

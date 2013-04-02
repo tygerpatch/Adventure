@@ -2,24 +2,23 @@ package items.classes;
 
 import items.interfacees.Defensive;
 import items.interfacees.Eatable;
-import items.interfacees.Item;
 import characters.BadGuy;
 import characters.Vampire;
 
-public class Garlic implements Eatable, Defensive, Item{
+public class Garlic extends Item implements Eatable, Defensive {
+
+  // *** Item
+  @Override
+  public String getName() {
+    return "Garlic";
+  }
 
   @Override
   public String toString() {
     return getName();
   }
 
-  // *** interface Item
-  @Override
-  public String getName() {
-    return "Garlic";
-  }
-
-  // *** interface Defensive
+  // *** Defensive
   @Override
   public boolean useOn(BadGuy badGuy) {
     // You can get past Vampire with Garlic

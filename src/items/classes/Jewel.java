@@ -1,17 +1,15 @@
 package items.classes;
 
-import items.interfacees.Item;
+public class Jewel extends Item {
 
-public class Jewel implements Item {
+  // *** Item
+  @Override
+  public String getName() {
+    return "Jewel";
+  }
 
   @Override
   public String toString() {
     return getName();
-  }
-
-  // *** interface Item
-  @Override
-  public String getName() {
-    return "Jewel";
   }
 }
