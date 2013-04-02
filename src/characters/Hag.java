@@ -75,5 +75,8 @@ public class Hag extends BadGuy {
 
     npc.interactWith(player);
     scanner.close();
+
+    System.out.println("-- Contents of Knapsack --");
+    System.out.println(player.knapsack);
   }
 }
