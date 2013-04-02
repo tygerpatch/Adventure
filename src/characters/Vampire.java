@@ -29,4 +29,8 @@ public class Vampire extends BadGuy {
   public String getName() {
     return "Vampire";
   }
+
+  public static void main(String[] args) {
+    new Vampire().interactWith(new Player());
+  }
 }

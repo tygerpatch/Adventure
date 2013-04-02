@@ -1,5 +1,8 @@
 package characters;
 
+import items.classes.Bread;
+import items.classes.Club;
+import items.classes.Garlic;
 import stuff.Player;
 
 // A harmless sort of bloke.
@@ -16,12 +19,27 @@ public class Hunchback extends NonPlayableCharacter {
     }
     else {
       int index = (int) (player.knapsack.size() * Math.random());
-      System.out.println("The hunchback stole your " + player.knapsack.removeItem(index));
+      System.out.println("The hunchback stole your " + player.knapsack.removeItem(index) + ".");
     }
   }
 
   @Override
   public String getName() {
     return "Hunchback";
+  }
+
+  public static void main(String[] args) {
+    System.out.println("-- Test Player with empty Knapsack --");
+    Player player = new Player();
+    NonPlayableCharacter npc = new Hunchback();
+
+    npc.interactWith(player);
+
+    System.out.println("-- Test Player with full Knapsack --");
+    player.knapsack.addItem(new Club());
+    player.knapsack.addItem(new Garlic());
+    player.knapsack.addItem(new Bread());
+
+    npc.interactWith(player);
   }
 }

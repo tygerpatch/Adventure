@@ -1,5 +1,8 @@
 package characters;
 
+import items.classes.Bread;
+import items.classes.Club;
+import items.classes.Garlic;
 import items.classes.Item;
 
 import java.util.Scanner;
@@ -42,6 +45,7 @@ public class Hag extends BadGuy {
       for (Item item : player.knapsack) {
         if (item.getName().equalsIgnoreCase(strItem)) {
           player.knapsack.removeItem(item);
+          System.out.println("You gave the Hag " + item + ".");
           return;
         }
       }
@@ -53,5 +57,23 @@ public class Hag extends BadGuy {
   @Override
   public String getName() {
     return "Hag";
+  }
+
+  public static void main(String[] args) {
+    final Scanner scanner = new Scanner(System.in);
+
+    System.out.println("-- Test Player with empty Knapsack --");
+    Player player = new Player();
+    NonPlayableCharacter npc = new Hag(scanner);
+
+    npc.interactWith(player);
+
+    System.out.println("-- Test Player with full Knapsack --");
+    player.knapsack.addItem(new Club());
+    player.knapsack.addItem(new Garlic());
+    player.knapsack.addItem(new Bread());
+
+    npc.interactWith(player);
+    scanner.close();
   }
 }

@@ -26,4 +26,8 @@ public class Troll extends BadGuy {
   public String getName() {
     return "Troll";
   }
+
+  public static void main(String[] args) {
+    new Troll().interactWith(new Player());
+  }
 }

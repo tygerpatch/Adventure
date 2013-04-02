@@ -27,4 +27,8 @@ public class Werewolf extends BadGuy {
   public String getName() {
     return "Werewolf";
   }
+
+  public static void main(String[] args) {
+    new Werewolf().interactWith(new Player());
+  }
 }

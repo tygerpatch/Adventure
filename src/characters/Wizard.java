@@ -27,4 +27,11 @@ public class Wizard extends NonPlayableCharacter {
   public String getName() {
     return "Wizard";
   }
+
+  public static void main(String[] args) {
+    Player player = new Player();
+    player.updateHealth(-10);
+
+    new Wizard().interactWith(player);
+  }
 }
