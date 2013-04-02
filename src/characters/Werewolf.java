@@ -12,7 +12,6 @@ public class Werewolf extends BadGuy {
   @Override
   public void damage(Player player) {
     System.out.println("Oh no, the Werewolf has bitten you!");
-    System.out.println("You died.");
     player.updateHealth(-Player.FULL_HEALTH);
   }
 
