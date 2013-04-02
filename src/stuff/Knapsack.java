@@ -22,21 +22,21 @@ public class Knapsack implements Iterable<Item> {
   // You can only carry three items in your knapsack.
   public static final int MAXIMUM_ALLOWABLE_ITEMS = 3;
 
-  // ex. take(HealthItem.Bread) -> returns true if successfully taken
-  public boolean addItem(Item item) {
-    if(items.size() >= MAXIMUM_ALLOWABLE_ITEMS) {
-     System.out.println("Unable to add " + item + " to Knapsack, because it is full.");
-     return false;
-    }
+  public boolean isFull() {
+    return (items.size() >= MAXIMUM_ALLOWABLE_ITEMS);
+  }
 
-    if(item instanceof Unmoveable) {
-     System.out.println(item + " is an unmoveable item.");
-     return false;
+  public void addItem(Item item) {
+    if(isFull()) {
+      System.out.println("Unable to add " + item + " to Knapsack, because it is full.");
     }
-
-    items.add(item);
-    System.out.println("You added the " + item + " to your knapsack.");
-    return true;
+    else if(item instanceof Unmoveable) {
+      System.out.println("Unable to add " + item + " to Knapsack, because it cannot be moved.");
+    }
+    else {
+      items.add(item);
+      System.out.println("You added the " + item + " to your knapsack.");
+    }
   }
 
   @Override
@@ -51,7 +51,7 @@ public class Knapsack implements Iterable<Item> {
 
   public void removeItem(Item item) {
     if(items.remove(item)) {
-      System.out.println("The " + item  + " was removed from your knapsack.");
+      System.out.println(item  + " was removed from your knapsack.");
     }
     else {
       System.out.println("You do not have that item in your knapsack.");
