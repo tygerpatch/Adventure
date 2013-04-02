@@ -1,6 +1,7 @@
 package commands.moving;
 
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import stuff.Castle;
 import stuff.Player;
@@ -16,7 +17,9 @@ public class EastMovementCommand extends AbstractMovementCommand {
   }
 
   public static void main(String[] args) throws FileNotFoundException {
-    Castle castle = Castle.loadFrom("./dat-files/castle.dat");
+    Scanner scanner = new Scanner(System.in);
+    Castle castle = Castle.loadFrom("./dat-files/castle.dat", scanner);
+    scanner.close();
     Player player = new Player();
     EastMovementCommand command = new EastMovementCommand();
 

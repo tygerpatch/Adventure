@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Stack;
 
 import stuff.Castle;
@@ -113,9 +114,11 @@ public class FleeCommand {
   }
 
   public static void main(String[] args) throws FileNotFoundException {
-    FleeCommand command = new FleeCommand();
-    Castle castle = Castle.loadFrom("./dat-files/castle2.dat");
+    Scanner scanner = new Scanner(System.in);
+    Castle castle = Castle.loadFrom("./dat-files/castle2.dat", scanner);
+    scanner.close();
     Room room = castle.findRoom("Breakfast Room");
+    FleeCommand command = new FleeCommand();
     command.execute(castle, room);
   }
 }

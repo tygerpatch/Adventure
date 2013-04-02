@@ -50,23 +50,23 @@ public class Castle implements Iterable<Room> {
     return rooms.iterator();
   }
 
-  public static Castle loadFrom(String filePath) throws FileNotFoundException {
+  public static Castle loadFrom(String filePath, Scanner scanner) throws FileNotFoundException {
     Castle castle = new Castle();
 
-    Scanner scanner = new Scanner(new File(filePath));
+    Scanner fileScanner = new Scanner(new File(filePath));
 
     // Step 1: Read in all the rooms that are in the castle.
     // node and description: an integer followed by a space and up to 20 characters for the room name
     int node;
     Room room;
 
-    while (NO_MORE_ROOMS != (node = scanner.nextInt())) {
+    while (NO_MORE_ROOMS != (node = fileScanner.nextInt())) {
 
       // create a new room with the given name and number
       room = new Room();
 
       room.setNumber(node);
-      room.setName(scanner.nextLine().trim());
+      room.setName(fileScanner.nextLine().trim());
 
       castle.addRoom(room);
     }
@@ -76,9 +76,9 @@ public class Castle implements Iterable<Room> {
     int origin, destination;
     Direction direction;
 
-    while (NO_MORE_PASSAGES != (origin = scanner.nextInt())) {
-      destination = scanner.nextInt();
-      direction = Direction.fromChar(scanner.nextLine().trim().charAt(0));
+    while (NO_MORE_PASSAGES != (origin = fileScanner.nextInt())) {
+      destination = fileScanner.nextInt();
+      direction = Direction.fromChar(fileScanner.nextLine().trim().charAt(0));
       castle.getRoom(origin).addDoor(direction, destination);
     }
 
@@ -89,23 +89,23 @@ public class Castle implements Iterable<Room> {
     Item item;
 
     // keep reading until end of stream is reached
-    while (scanner.hasNextInt()) {
-      room = castle.getRoom(scanner.nextInt());
-      numItems = scanner.nextInt();
+    while (fileScanner.hasNextInt()) {
+      room = castle.getRoom(fileScanner.nextInt());
+      numItems = fileScanner.nextInt();
 
       for(int i = 0; i < numItems; i++) {
-        str = scanner.next();
+        str = fileScanner.next();
 
         if(null != (item = Item.fromString(str))) {
           room.addItem(item);
         }
         else {
-          room.addOccupant(NonPlayableCharacter.fromString(str));
+          room.addOccupant(NonPlayableCharacter.fromString(str, scanner));
         }
       }
     }
 
-    scanner.close();
+    fileScanner.close();
 
     return castle;
   }
@@ -134,7 +134,9 @@ public class Castle implements Iterable<Room> {
 
     System.out.println("-- Test loading a castle from a file --");
 
-    castle = Castle.loadFrom("./dat-files/castle.dat");
+    Scanner scanner = new Scanner(System.in);
+    castle = Castle.loadFrom("./dat-files/castle.dat", scanner);
+    scanner.close();
 
     Room room = castle.getRoom(3);
     System.out.println("-- Test that the " + room.getName() + " has an occupant and some items --");

@@ -1,6 +1,7 @@
 package commands;
 
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import stuff.Castle;
 import stuff.Door;
@@ -41,6 +42,8 @@ public class DebugCommand {
   }
 
   public static void main(String[] args) throws FileNotFoundException {
-    new DebugCommand().execute(Castle.loadFrom("./dat-files/castle.dat"));
+    Scanner scanner = new Scanner(System.in);
+    new DebugCommand().execute(Castle.loadFrom("./dat-files/castle.dat", scanner));
+    scanner.close();
   }
 }

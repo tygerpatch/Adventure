@@ -43,7 +43,8 @@ public class Adventure {
 
   public static void main(String[] args) throws FileNotFoundException {
 
-    Castle castle = Castle.loadFrom("./dat-files/castle.dat");
+    Scanner scanner = new Scanner(System.in);
+    Castle castle = Castle.loadFrom("./dat-files/castle.dat", scanner);
     System.out.println("King: Find me my crown!");
     Player player = new Player();
     player.setRoom(castle.findRoom("Entrance Hall"));
@@ -63,7 +64,6 @@ public class Adventure {
     System.out.println(MENU.toString());
     System.out.println();
 
-    Scanner scanner = new Scanner(System.in);
     boolean done = false;
 
     while (!done && player.isAlive()) {
