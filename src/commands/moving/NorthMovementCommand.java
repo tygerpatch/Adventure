@@ -1,16 +1,12 @@
 package commands.moving;
 
-import stuff.Adventure;
+import stuff.Castle;
+import stuff.Player;
 import enums.Direction;
 
 public class NorthMovementCommand extends AbstractMovementCommand {
 
-  public NorthMovementCommand(Adventure adventure) {
-    super(adventure);
-  }
-
-  @Override
-  public void execute() {
-    enterPassage(Direction.North);
+  public void execute(Player player, Castle castle) {
+    move(player, Direction.North, castle);
   }
 }
