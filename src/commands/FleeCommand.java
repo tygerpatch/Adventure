@@ -1,22 +1,33 @@
 package commands;
 
+import java.io.FileNotFoundException;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Stack;
 
-import stuff.Adventure;
+import stuff.Castle;
+import stuff.DistanceComparator;
+import stuff.Door;
+import stuff.Path;
 import stuff.Room;
 import enums.Direction;
 
-public class FleeCommand extends AbstractCommand {
+public class FleeCommand {
 
-  public FleeCommand(Adventure adventure) {
-    super(adventure);
-  }
+  public void check(Castle castle, Room fromRoom, Direction direction) {
+    Door door = fromRoom.getDoor(direction);
+    Room toRoom;
 
-  private class Node {
-    public int distance = Integer.MAX_VALUE;
-    public int fromRoom = 0;
-    public boolean visited = false;
-    public Direction direction = null;
+    if(door != null) {
+      toRoom = castle.getRoom(door.open());
+
+      if(toRoom.getDistance() > (fromRoom.getDistance() + 1)) {
+        toRoom.setDistance(fromRoom.getDistance() + 1);
+        toRoom.setPath(new Path(direction, fromRoom.getNumber()));
+      }
+    }
   }
 
   // Method that causes the user to flee to the starting room.
@@ -24,95 +35,87 @@ public class FleeCommand extends AbstractCommand {
   // You are required to use Dijkstra’s Shortest Path algorithm when you flee.
   // Your output should be the list of rooms, starting with the room you are in when you flee, and the directions taken through each room along your path.
   // You are running so fast, that the characters in each of the rooms along your path cannot hurt you.
-  @Override
-  public void execute() {
-    Room[] castle = adventure.getCastle();
-    Node[] nodes = new Node[adventure.castleSize];
+  //@Override
+  public void execute(Castle castle, Room currentRoom) {
+    List<Room> list = new LinkedList<Room>();
 
-    // Start by initializing all the distances to infinity.
-    for(int indx = 0; indx < nodes.length; indx++) {
-      nodes[indx] = new Node();
+    // Setup for Dijkstra's Algorithm
+    // We start by saying we can't get to any of the rooms in the castle.
+    for(Room room : castle) {
+      room.setDistance(Integer.MAX_VALUE);
+      room.setVisited(false);
+      room.setPath(null);
+
+      list.add(room);
     }
 
     // Next we look at all the rooms we can get to from the current room.
-    Node node;
-    Room room = adventure.getCurrentRoom();
-    int[] doors = room.getDoors();
+    Room toRoom, fromRoom;
 
-    for(int indx = 0; indx < 4; indx++) {
-      node = nodes[doors[indx]];
+    fromRoom = currentRoom;
+    fromRoom.setDistance(0);
 
-      node.distance = 1;
-      node.fromRoom = room.getNumber();
-      node.direction = Direction.fromInteger(indx);
-    }
+    check(castle, fromRoom, Direction.North);
+    check(castle, fromRoom, Direction.East);
+    check(castle, fromRoom, Direction.South);
+    check(castle, fromRoom, Direction.West);
 
     // We'll also mark this path as complete so that we don't process it again.
-    nodes[room.getNumber()].visited = true;
+    fromRoom.setVisited(true);
+    list.remove(fromRoom);
+    Comparator<Room> comparator = new DistanceComparator();
+    Collections.sort(list, comparator);
 
     // All the remaining distances are going to be infinity because we have no paths to those yet.
-    // We then repeat the above process, starting at the vertex with the shortest distance.
-    int shortestDistance = Integer.MAX_VALUE;
-    boolean done = false;
+    // We then repeat the above process, starting at first unvisited room with the shortest distance.
+    while(!list.isEmpty()) {
+      fromRoom = list.remove(0);
 
-    while(!done) {
-      done = true;  // indicates we have no more rooms to visit
+      check(castle, fromRoom, Direction.North);
+      check(castle, fromRoom, Direction.East);
+      check(castle, fromRoom, Direction.South);
+      check(castle, fromRoom, Direction.West);
 
-      // Find the "closest" room we haven't visited yet.
-      for(int indx = 1; indx < nodes.length; indx++) {
-        if((!nodes[indx].visited) &&  (nodes[indx].distance < shortestDistance)) {
-          shortestDistance = nodes[indx].distance;
-          room = castle[indx];
-          done = false; // indicates we have another room to visit
-        }
-      }
-
-      // Update the information we have on each room this closest-room leads to.
-      doors = room.getDoors();
-      for(int indx = 0; indx < 4; indx++) {
-        node = nodes[doors[indx]];
-
-        if(node.distance > (nodes[room.getNumber()].distance + 1)) {
-          node.distance = nodes[room.getNumber()].distance + 1;;
-          node.fromRoom = room.getNumber();
-          node.direction = Direction.fromInteger(indx);
-        }
-      }
-      nodes[room.getNumber()].visited = true;
-      shortestDistance = Integer.MAX_VALUE;
+      // We'll also mark this path as complete so that we don't process it again.
+      fromRoom.setVisited(true);
+      Collections.sort(list, comparator);
     }
 
     // Starting from the Entrance Hall, work backwards until the current room is reached.
-    Room origin;
-    Room currentRoom = adventure.getCurrentRoom();
-    Room destination = adventure.getEntranceHall();
-    Direction direction;
-    StringBuilder strBuilder = new StringBuilder();
-    Stack<String> stack = new Stack<String>();
+    toRoom = castle.findRoom("Entrance Hall");
 
-    while(destination != currentRoom) {
-      node = nodes[destination.getNumber()];
-      origin = castle[node.fromRoom];
-      direction = node.direction;
+    Stack<String> stack = new Stack<String>();
+    StringBuilder strBuilder = new StringBuilder();
+    Path path;
+
+    while(toRoom != currentRoom) {
+      path = toRoom.getPath();
+      fromRoom = castle.getRoom(path.getRoomNumber());
 
       strBuilder.delete(0, strBuilder.length());
       strBuilder.append("From the ");
-      strBuilder.append(origin.getName());
+      strBuilder.append(fromRoom.getName());
       strBuilder.append(" you open the door on the ");
-      strBuilder.append(direction.getName());
+      strBuilder.append(path.getDirection().getName());
       strBuilder.append("-side and enter the ");
-      strBuilder.append(destination.getName());
+      strBuilder.append(toRoom.getName());
       strBuilder.append(".");
 
       stack.push(strBuilder.toString());
 
-      destination = origin;
+      toRoom = fromRoom;
     }
 
     // Display the paths to take to get from the current room to the Entrance Hall.
     while(!stack.isEmpty()) {
       System.out.println(stack.pop());
     }
-    adventure.setStillPlaying(false);
+  }
+
+  public static void main(String[] args) throws FileNotFoundException {
+    FleeCommand command = new FleeCommand();
+    Castle castle = Castle.loadFrom("./dat-files/castle2.dat");
+    Room room = castle.findRoom("Breakfast Room");
+    command.execute(castle, room);
   }
 }
