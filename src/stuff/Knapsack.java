@@ -51,7 +51,7 @@ public class Knapsack implements Iterable<Item> {
 
   public void removeItem(Item item) {
     if(items.remove(item)) {
-      System.out.println("You removed the " + item + " from your knapsack.");
+      System.out.println("The " + item  + " was removed from your knapsack.");
     }
     else {
       System.out.println("You do not have that item in your knapsack.");
