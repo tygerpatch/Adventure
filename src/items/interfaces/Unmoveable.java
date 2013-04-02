@@ -1,4 +1,4 @@
-package items.interfacees;
+package items.interfaces;
 
 public interface Unmoveable {
 }

@@ -1,4 +1,4 @@
-package items.interfacees;
+package items.interfaces;
 
 import characters.BadGuy;
 
