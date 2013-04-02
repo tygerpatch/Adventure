@@ -1,6 +1,6 @@
 package items.classes;
 
-import items.interfacees.Unmoveable;
+import items.interfaces.Unmoveable;
 
 public class Nothing extends Item implements Unmoveable {
 

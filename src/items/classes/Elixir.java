@@ -1,7 +1,7 @@
 package items.classes;
 
-import items.interfacees.Drinkable;
-import items.interfacees.Health;
+import items.interfaces.Drinkable;
+import items.interfaces.Health;
 
 public class Elixir extends Item implements Drinkable, Health {
 

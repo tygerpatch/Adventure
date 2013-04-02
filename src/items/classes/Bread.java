@@ -1,7 +1,7 @@
 package items.classes;
 
-import items.interfacees.Eatable;
-import items.interfacees.Health;
+import items.interfaces.Eatable;
+import items.interfaces.Health;
 
 public class Bread extends Item implements Eatable, Health {
 
