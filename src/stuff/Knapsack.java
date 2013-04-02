@@ -20,11 +20,11 @@ public class Knapsack implements Iterable<Item> {
   }
 
   // You can only carry three items in your knapsack.
-  public static final int MAXIMUM_ALLOWABLE_ITEMS_IN_KNAPSACK = 3;
+  public static final int MAXIMUM_ALLOWABLE_ITEMS = 3;
 
   // ex. take(HealthItem.Bread) -> returns true if successfully taken
   public boolean addItem(Item item) {
-    if(items.size() >= MAXIMUM_ALLOWABLE_ITEMS_IN_KNAPSACK) {
+    if(items.size() >= MAXIMUM_ALLOWABLE_ITEMS) {
      System.out.println("Unable to add " + item + " to Knapsack, because it is full.");
      return false;
     }
