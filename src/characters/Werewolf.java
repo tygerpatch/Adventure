@@ -6,16 +6,16 @@ import stuff.Player;
 // His bite is lethal.  You die.
 // If you have a silver bullet, you can kill him (and remove him from the room).
 // You can slip by him with a spell.
-public class Werewolf extends BadGuy implements NonPlayableCharacter {
+public class Werewolf extends BadGuy {
 
-  // *** BadGuy abstract class
+  // *** BadGuy
   @Override
   public void damage(Player player) {
     System.out.println("Oh no, the Werewolf has bitten you!");
     player.died();
   }
 
-  // *** NonPlayableCharacter interface
+  // *** NonPlayableCharacter
   @Override
   public void interactWith(Player player) {
     if(isBlockingDoor()) {
@@ -23,7 +23,6 @@ public class Werewolf extends BadGuy implements NonPlayableCharacter {
     }
   }
 
-  // *** Both BadGuy abstract class and NonPlayableCharacter interface
   @Override
   public String getName() {
     return "Werewolf";
