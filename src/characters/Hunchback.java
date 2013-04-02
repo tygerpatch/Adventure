@@ -3,6 +3,8 @@ package characters;
 import items.classes.Bread;
 import items.classes.Club;
 import items.classes.Garlic;
+import items.classes.Item;
+import stuff.Knapsack;
 import stuff.Player;
 
 // A harmless sort of bloke.
@@ -15,11 +17,21 @@ public class Hunchback extends NonPlayableCharacter {
   @Override
   public void interactWith(Player player) {
     if(player.knapsack.isEmpty()) {
-      System.out.println("The Hunchback just smiles at you as you walk out the door.");
+      System.out.println("The Hunchback just smiles as you walk out the door.");
     }
     else {
-      int index = (int) (player.knapsack.size() * Math.random());
-      System.out.println("The hunchback stole your " + player.knapsack.removeItem(index) + ".");
+      Knapsack knapsack = player.knapsack;
+      final int index = (int) (knapsack.size() * Math.random());
+      int count = 0;
+
+      for(Item item : knapsack) {
+        if(index == count) {
+          knapsack.removeItem(item);
+          System.out.println("The Hunchback stole your " + item + ".");
+          return;
+        }
+        count++;
+      }
     }
   }
 
@@ -41,5 +53,8 @@ public class Hunchback extends NonPlayableCharacter {
     player.knapsack.addItem(new Bread());
 
     npc.interactWith(player);
+
+    System.out.println("-- Contents of Knapsack --");
+    System.out.println(player.knapsack);
   }
 }
