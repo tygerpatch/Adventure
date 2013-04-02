@@ -19,8 +19,9 @@ public class Player {
       health = FULL_HEALTH;
     }
 
-    if(health < 0) {
+    if(health <= 0) {
       health = 0;
+      System.out.println("You died.");
     }
 
     System.out.println("Health: " + health);
@@ -58,6 +59,27 @@ public class Player {
 
   public boolean isAlive() {
     return (health > 0);
+  }
+
+  private Room room;
+
+  // Player should know the current room that they are in.
+  public Room getRoom() {
+    return room;
+  }
+
+  public void setRoom(Room room) {
+    this.room = room;
+
+    // Tell the user what room he/she is in
+    System.out.println("You are now in the " + room.getName());
+
+    // Tell the user what and/or who is in the room with you.
+    System.out.println("Items in the room: " + room.getItems());
+
+    if(room.hasOccupant()) {
+      System.out.println("The room also has an occupant: " + room.getOccupant().getName());
+    }
   }
 
   public static void main(String[] args) {
