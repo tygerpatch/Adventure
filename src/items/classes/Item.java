@@ -1,24 +1,9 @@
-package util;
+package items.classes;
 
-import items.classes.Bread;
-import items.classes.Candle;
-import items.classes.Club;
-import items.classes.Crown;
-import items.classes.Elixir;
-import items.classes.Garlic;
-import items.classes.Goblet;
-import items.classes.Jewel;
-import items.classes.Nothing;
-import items.classes.SilverBullet;
-import items.classes.Spell;
-import items.classes.Table;
-import items.classes.Tome;
-import items.classes.WoodenStake;
-import items.interfacees.Item;
+public abstract class Item {
+  public abstract String getName();
 
-public class ItemParser {
-
-  public static Item parseString(String strItem) {
+  public static Item fromString(String strItem) {
     // *** Defensive Items
     if("Club".equalsIgnoreCase(strItem)) {
       return new Club();
@@ -83,4 +68,5 @@ public class ItemParser {
 
     return null;
   }
+  
 }
