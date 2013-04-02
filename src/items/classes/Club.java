@@ -1,8 +1,13 @@
 package items.classes;
 
-import items.interfacees.Defensive;
+import java.util.Scanner;
+
+import items.interfaces.Defensive;
 import characters.BadGuy;
+import characters.Hag;
 import characters.Troll;
+import characters.Vampire;
+import characters.Werewolf;
 
 public class Club extends Item implements Defensive {
 
@@ -30,5 +35,21 @@ public class Club extends Item implements Defensive {
     }
 
     return false;
+  }
+
+  public static void main(String[] args) {
+    Defensive defensive = new Club();
+
+    System.out.println("-- Hag Test --");
+    defensive.useOn(new Hag(new Scanner(System.in)));
+
+    System.out.println("-- Troll Test --");
+    defensive.useOn(new Troll());
+
+    System.out.println("-- Vampire Test --");
+    defensive.useOn(new Vampire());
+
+    System.out.println("-- Werewolf Test --");
+    defensive.useOn(new Werewolf());
   }
 }
