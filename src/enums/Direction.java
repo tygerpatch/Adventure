@@ -22,7 +22,7 @@ public enum Direction {
   }
 
   // ex. Direction.valueOf('N') -> Direction.North
-  public static Direction parseChar(char ch) {
+  public static Direction fromChar(char ch) {
     if((ch == 'N') || (ch == 'n')) {
       return North;
     }
