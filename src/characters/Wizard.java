@@ -13,8 +13,8 @@ public class Wizard extends NonPlayableCharacter {
   // *** NonPlayableCharacter
   @Override
   public void interactWith(Player player) {
-    if(player.knapsack.size() < Knapsack.MAXIMUM_ALLOWABLE_ITEMS_IN_KNAPSACK) {
-      System.out.println("The Wizard gives you a spell.");
+    if(player.knapsack.size() < Knapsack.MAXIMUM_ALLOWABLE_ITEMS) {
+      System.out.println("The Wizard gives you a Spell.");
       player.knapsack.addItem(new Spell());
     }
 
