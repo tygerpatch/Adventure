@@ -3,9 +3,8 @@ package characters;
 import stuff.Player;
 
 // There are good and bad guys. Bad guys damage player.
-public abstract class BadGuy {
+public abstract class BadGuy extends NonPlayableCharacter {
   public abstract void damage(Player player);
-  public abstract String getName();
 
   private boolean isBlockingDoor = true;
 
